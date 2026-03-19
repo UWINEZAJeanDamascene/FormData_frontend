@@ -13,8 +13,10 @@
     "isolatedModules": true,
     "noEmit": true,
     "jsx": "react-jsx",
+    "types": ["vite/client"],
 
     /* Linting */
+    "ignoreDeprecations": "6.0",
     "strict": true,
     "noUnusedLocals": true,
     "noUnusedParameters": true,
