@@ -1,4 +1,4 @@
-import { InventoryItem, InventoryFormData, ApiResponse } from '../types/inventory';
+import { InventoryItem, InventoryFormData, ApiResponse } from '../types/inventory'; 
 
 // API Configuration - Use environment variable or fallback to local
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:3002/api/inventory';
