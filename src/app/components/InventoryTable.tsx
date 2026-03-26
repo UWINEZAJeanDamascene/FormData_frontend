@@ -82,8 +82,8 @@ export function InventoryTable({ items, onEdit, onDelete, isLoading }: Inventory
                   <TableCell>{item.productName}</TableCell>
                   <TableCell>{item.category}</TableCell>
                   <TableCell>{item.quantity}</TableCell>
-                  <TableCell>${item.unitPrice.toFixed(2)}</TableCell>
-                  <TableCell>${item.totalValue.toFixed(2)}</TableCell>
+                  <TableCell>FRW {item.unitPrice.toFixed(2)}</TableCell>
+                  <TableCell>FRW {item.totalValue.toFixed(2)}</TableCell>
                   <TableCell>
                     <Badge className={getStatusColor(item.status)}>
                       {item.status}

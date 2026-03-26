@@ -158,7 +158,7 @@ export function InventoryForm({ onSubmit, onCancel, initialData, isLoading }: In
 
             {/* Unit Price */}
             <div className="space-y-2">
-              <Label htmlFor="unitPrice">Unit Price ($) *</Label>
+              <Label htmlFor="unitPrice">Unit Price (FRW) *</Label>
               <Input
                 id="unitPrice"
                 type="number"
@@ -173,7 +173,7 @@ export function InventoryForm({ onSubmit, onCancel, initialData, isLoading }: In
 
             {/* Total Value (Calculated) */}
             <div className="space-y-2">
-              <Label htmlFor="totalValue">Total Value ($)</Label>
+              <Label htmlFor="totalValue">Total Value (FRW)</Label>
               <Input
                 id="totalValue"
                 type="text"

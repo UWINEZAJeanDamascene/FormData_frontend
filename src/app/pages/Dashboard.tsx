@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Link } from 'react-router';
+import { Link, useNavigate } from 'react-router';
 import { InventoryItem, InventoryFormData } from '../types/inventory';
 import { getAllItems, createItem, updateItem, deleteItem, getInventoryStats } from '../services/inventoryApi';
 import { InventoryForm } from '../components/InventoryForm';
@@ -10,7 +10,9 @@ import { Input } from '../components/ui/input';
 import { Label } from '../components/ui/label';
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from '../components/ui/dialog';
 import { toast } from 'sonner';
-import { Plus, Home, Package, Search } from 'lucide-react';
+import { Plus, Home, Package, Search, Users, LogOut } from 'lucide-react';
+import { useAuth } from '../context/AuthContext';
+import { ImageWithFallback } from '../components/figma/ImageWithFallback';
 
 export function Dashboard() {
   const [items, setItems] = useState<InventoryItem[]>([]);
@@ -21,6 +23,9 @@ export function Dashboard() {
   const [editingItem, setEditingItem] = useState<InventoryItem | null>(null);
   const [showForm, setShowForm] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
+  
+  const { user, logout } = useAuth();
+  const navigate = useNavigate();
 
   useEffect(() => {
     fetchItems();
@@ -126,18 +131,30 @@ export function Dashboard() {
           <div className="flex justify-between items-center h-16">
             <div className="flex items-center gap-6">
               <Link to="/" className="flex items-center gap-2 hover:opacity-80 transition-opacity">
-                <Package className="h-6 w-6 text-primary" />
+                <ImageWithFallback src="/logo/logo.jpeg" alt="CTS Logo" className="h-6 w-6 rounded-full" />
                 <span className="font-bold text-lg">Field Data</span>
               </Link>
               <span className="text-sm text-muted-foreground hidden sm:inline">Records</span>
             </div>
             <div className="flex items-center gap-3">
+              {user?.role === 'admin' && (
+                <Link to="/users">
+                  <Button variant="ghost" size="sm">
+                    <Users className="h-4 w-4 mr-2" />
+                    Users
+                  </Button>
+                </Link>
+              )}
               <Link to="/">
                 <Button variant="ghost" size="sm">
                   <Home className="h-4 w-4 mr-2" />
                   Home
                 </Button>
               </Link>
+              <Button variant="ghost" size="sm" onClick={() => { logout(); navigate('/'); }}>
+                <LogOut className="h-4 w-4 mr-2" />
+                Logout
+              </Button>
             </div>
           </div>
         </div>

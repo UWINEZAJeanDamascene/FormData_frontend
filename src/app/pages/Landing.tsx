@@ -2,6 +2,7 @@ import { Link } from 'react-router';
 import { Button } from '../components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../components/ui/card';
 import { ThemeToggle } from '../components/ThemeToggle';
+import { ImageWithFallback } from '../components/figma/ImageWithFallback';
 import {
   ClipboardList,
   Database,
@@ -43,13 +44,13 @@ export function Landing() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-16">
             <div className="flex items-center gap-2">
-              <ClipboardList className="h-8 w-8 text-primary" />
+              <ImageWithFallback src="/logo/logo.jpeg" alt="CTS Logo" className="h-8 w-8 rounded-full" />
               <span className="font-bold text-3xl">CTS</span>
             </div>
             <div className="flex items-center gap-4">
               <ThemeToggle />
-              <Link to="/dashboard">
-                <Button>Go to App</Button>
+              <Link to="/login">
+                <Button>Sign In</Button>
               </Link>
             </div>
           </div>
@@ -69,7 +70,7 @@ export function Landing() {
               </span>
             </h1>
             <p className="text-lg sm:text-xl text-muted-foreground max-w-3xl mx-auto mb-10 animate-in fade-in slide-in-from-bottom-5 duration-1000 delay-300">
-              A simple and efficient tool for recording and managing field data. 
+              A simple and efficient tool for recording and managing field data, including non-invoice data. 
               Perfect for collecting data on-site with an easy-to-use interface.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center animate-in fade-in slide-in-from-bottom-6 duration-1000 delay-500">
@@ -196,9 +197,9 @@ export function Landing() {
             Ready to Start?
           </h2>
           <p className="text-lg text-white/90 mb-8">
-            Begin recording your field data today. It's simple and free.
+            Begin recording your field data and non-invoice data today. It's simple and free.
           </p>
-          <Link to="/dashboard">
+          <Link to="/login">
             <Button size="lg" variant="secondary" className="text-lg px-8 group">
               Go to Data Records
               <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
