@@ -1,6 +1,6 @@
-// API Configuration - Use environment variable for production, fallback to proxy for dev
-const API_BASE_URL = import.meta.env.VITE_API_BASE_URL?.replace('/api/inventory', '') || '';
-const AUTH_API_BASE = import.meta.env.VITE_API_BASE_URL ? import.meta.env.VITE_API_BASE_URL.replace('/api/inventory', '') + '/api/auth' : '/api/auth';
+// API Configuration - Use environment variable for production, fallback to localhost for dev
+const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:3002';
+const AUTH_API_BASE = `${API_BASE_URL}/api/auth`;
 
 export interface LoginCredentials {
   email: string;
@@ -31,7 +31,7 @@ const getHeaders = () => {
 
 export const authApi = {
   login: async (credentials: LoginCredentials) => {
-    const response = await fetch(`${API_BASE_URL}/login`, {
+    const response = await fetch(`${AUTH_API_BASE}/login`, {
       method: 'POST',
       headers: getHeaders(),
       body: JSON.stringify(credentials),
@@ -41,7 +41,7 @@ export const authApi = {
   },
 
   getAllUsers: async () => {
-    const response = await fetch(`${API_BASE_URL}/users`, {
+    const response = await fetch(`${AUTH_API_BASE}/users`, {
       method: 'GET',
       headers: getHeaders(),
     });
@@ -50,7 +50,7 @@ export const authApi = {
   },
 
   createUser: async (userData: CreateUserData) => {
-    const response = await fetch(`${API_BASE_URL}/users`, {
+    const response = await fetch(`${AUTH_API_BASE}/users`, {
       method: 'POST',
       headers: getHeaders(),
       body: JSON.stringify(userData),
@@ -60,7 +60,7 @@ export const authApi = {
   },
 
   updateUser: async (id: string, userData: Partial<CreateUserData>) => {
-    const response = await fetch(`${API_BASE_URL}/users/${id}`, {
+    const response = await fetch(`${AUTH_API_BASE}/users/${id}`, {
       method: 'PUT',
       headers: getHeaders(),
       body: JSON.stringify(userData),
@@ -70,7 +70,7 @@ export const authApi = {
   },
 
   deleteUser: async (id: string) => {
-    const response = await fetch(`${API_BASE_URL}/users/${id}`, {
+    const response = await fetch(`${AUTH_API_BASE}/users/${id}`, {
       method: 'DELETE',
       headers: getHeaders(),
     });
@@ -79,7 +79,7 @@ export const authApi = {
   },
 
   resetPassword: async (id: string, newPassword: string) => {
-    const response = await fetch(`${API_BASE_URL}/users/${id}/reset-password`, {
+    const response = await fetch(`${AUTH_API_BASE}/users/${id}/reset-password`, {
       method: 'POST',
       headers: getHeaders(),
       body: JSON.stringify({ newPassword }),
