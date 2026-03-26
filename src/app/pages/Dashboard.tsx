@@ -10,7 +10,7 @@ import { Input } from '../components/ui/input';
 import { Label } from '../components/ui/label';
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from '../components/ui/dialog';
 import { toast } from 'sonner';
-import { Plus, Home, Package, Search, Users, LogOut } from 'lucide-react';
+import { Plus, Home, Package, Search, Users, LogOut, Menu, X } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 import { ImageWithFallback } from '../components/figma/ImageWithFallback';
 
@@ -23,6 +23,7 @@ export function Dashboard() {
   const [editingItem, setEditingItem] = useState<InventoryItem | null>(null);
   const [showForm, setShowForm] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   
   const { user, logout } = useAuth();
   const navigate = useNavigate();
@@ -136,7 +137,17 @@ export function Dashboard() {
               </Link>
               <span className="text-sm text-muted-foreground hidden sm:inline">Records</span>
             </div>
-            <div className="flex items-center gap-3">
+            
+            {/* Mobile menu button */}
+            <button
+              className="md:hidden p-2 rounded-md hover:bg-muted"
+              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+            >
+              {mobileMenuOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
+            </button>
+
+            {/* Desktop Navigation */}
+            <div className="hidden md:flex items-center gap-3">
               {user?.role === 'admin' && (
                 <>
                   <Link to="/categories">
@@ -166,6 +177,34 @@ export function Dashboard() {
             </div>
           </div>
         </div>
+
+        {/* Mobile Navigation Menu */}
+        {mobileMenuOpen && (
+          <div className="md:hidden border-t bg-card">
+            <div className="px-4 py-3 space-y-2">
+              {user?.role === 'admin' && (
+                <>
+                  <Link to="/categories" onClick={() => setMobileMenuOpen(false)} className="flex items-center gap-2 px-3 py-2 rounded-md hover:bg-muted">
+                    <Package className="h-4 w-4" />
+                    <span>Categories</span>
+                  </Link>
+                  <Link to="/users" onClick={() => setMobileMenuOpen(false)} className="flex items-center gap-2 px-3 py-2 rounded-md hover:bg-muted">
+                    <Users className="h-4 w-4" />
+                    <span>Users</span>
+                  </Link>
+                </>
+              )}
+              <Link to="/" onClick={() => setMobileMenuOpen(false)} className="flex items-center gap-2 px-3 py-2 rounded-md hover:bg-muted">
+                <Home className="h-4 w-4" />
+                <span>Home</span>
+              </Link>
+              <button onClick={() => { logout(); navigate('/'); }} className="flex items-center gap-2 px-3 py-2 rounded-md hover:bg-muted w-full text-left">
+                <LogOut className="h-4 w-4" />
+                <span>Logout</span>
+              </button>
+            </div>
+          </div>
+        )}
       </nav>
 
       {/* Main Content */}
