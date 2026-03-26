@@ -26,8 +26,9 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   const login = async (email: string, password: string) => {
     setIsLoading(true);
+    const apiBaseUrl = import.meta.env.VITE_API_BASE_URL?.replace('/api/inventory', '') || '';
     try {
-      const response = await fetch('/api/auth/login', {
+      const response = await fetch(`${apiBaseUrl}/api/auth/login`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email, password }),

@@ -1,4 +1,6 @@
-const API_BASE_URL = '/api/auth';
+// API Configuration - Use environment variable for production, fallback to proxy for dev
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL?.replace('/api/inventory', '') || '';
+const AUTH_API_BASE = import.meta.env.VITE_API_BASE_URL ? import.meta.env.VITE_API_BASE_URL.replace('/api/inventory', '') + '/api/auth' : '/api/auth';
 
 export interface LoginCredentials {
   email: string;
