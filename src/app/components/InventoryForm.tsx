@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { InventoryFormData, InventoryItem } from '../types/inventory';
+import { categoryApi } from '../services/categoryApi';
 import { Button } from './ui/button';
 import { Input } from './ui/input';
 import { Label } from './ui/label';
@@ -14,7 +15,7 @@ interface InventoryFormProps {
   isLoading?: boolean;
 }
 
-const categories = [
+const defaultCategories = [
   'Electronics',
   'Accessories',
   'Furniture',
@@ -27,6 +28,40 @@ const categories = [
 ];
 
 export function InventoryForm({ onSubmit, onCancel, initialData, isLoading }: InventoryFormProps) {
+  const [categories, setCategories] = useState<string[]>([]);
+  const [loadingCategories, setLoadingCategories] = useState(true);
+  const [newCategory, setNewCategory] = useState('');
+  const [showCategoryInput, setShowCategoryInput] = useState(false);
+
+  useEffect(() => {
+    loadCategories();
+  }, []);
+
+  const loadCategories = async () => {
+    try {
+      const fetchedCategories = await categoryApi.getAll();
+      // Use categories from API or fall back to defaults
+      const categoryNames = fetchedCategories.length > 0 
+        ? fetchedCategories.map(c => c.name) 
+        : defaultCategories;
+      setCategories(categoryNames);
+    } catch (error) {
+      console.error('Failed to load categories:', error);
+      setCategories(defaultCategories);
+    } finally {
+      setLoadingCategories(false);
+    }
+  };
+
+  const handleAddCategory = () => {
+    if (newCategory.trim() && !categories.includes(newCategory.trim())) {
+      setCategories([...categories, newCategory.trim()]);
+      setFormData({ ...formData, category: newCategory.trim() });
+      setNewCategory('');
+      setShowCategoryInput(false);
+    }
+  };
+
   const [formData, setFormData] = useState<InventoryFormData>({
     productId: '',
     productName: '',
@@ -112,18 +147,45 @@ export function InventoryForm({ onSubmit, onCancel, initialData, isLoading }: In
             {/* Category */}
             <div className="space-y-2">
               <Label htmlFor="category">Category</Label>
-              <Select value={formData.category || ''} onValueChange={(value) => handleChange('category', value)}>
-                <SelectTrigger>
-                  <SelectValue placeholder="Select category" />
-                </SelectTrigger>
-                <SelectContent>
-                  {categories.map((cat) => (
-                    <SelectItem key={cat} value={cat}>
-                      {cat}
+              <div className="flex gap-2">
+                <Select value={formData.category || ''} onValueChange={(value) => {
+                  if (value === 'add_new') {
+                    setShowCategoryInput(true);
+                  } else {
+                    handleChange('category', value);
+                  }
+                }}>
+                  <SelectTrigger>
+                    <SelectValue placeholder="Select category" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {categories.map((cat) => (
+                      <SelectItem key={cat} value={cat}>
+                        {cat}
+                      </SelectItem>
+                    ))}
+                    <SelectItem value="add_new" className="font-medium text-primary">
+                      + Add New Category
                     </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
+                  </SelectContent>
+                </Select>
+              </div>
+              {showCategoryInput && (
+                <div className="flex gap-2 mt-2">
+                  <Input
+                    placeholder="Enter new category name"
+                    value={newCategory}
+                    onChange={(e) => setNewCategory(e.target.value)}
+                    onKeyDown={(e) => e.key === 'Enter' && handleAddCategory()}
+                  />
+                  <Button type="button" onClick={handleAddCategory} size="sm">
+                    Add
+                  </Button>
+                  <Button type="button" variant="outline" onClick={() => setShowCategoryInput(false)} size="sm">
+                    Cancel
+                  </Button>
+                </div>
+              )}
             </div>
 
             {/* Status */}

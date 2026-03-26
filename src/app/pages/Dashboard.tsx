@@ -138,12 +138,20 @@ export function Dashboard() {
             </div>
             <div className="flex items-center gap-3">
               {user?.role === 'admin' && (
-                <Link to="/users">
-                  <Button variant="ghost" size="sm">
-                    <Users className="h-4 w-4 mr-2" />
-                    Users
-                  </Button>
-                </Link>
+                <>
+                  <Link to="/categories">
+                    <Button variant="ghost" size="sm">
+                      <Package className="h-4 w-4 mr-2" />
+                      Categories
+                    </Button>
+                  </Link>
+                  <Link to="/users">
+                    <Button variant="ghost" size="sm">
+                      <Users className="h-4 w-4 mr-2" />
+                      Users
+                    </Button>
+                  </Link>
+                </>
               )}
               <Link to="/">
                 <Button variant="ghost" size="sm">
