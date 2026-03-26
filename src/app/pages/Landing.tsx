@@ -74,7 +74,7 @@ export function Landing() {
               Perfect for collecting data on-site with an easy-to-use interface.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center animate-in fade-in slide-in-from-bottom-6 duration-1000 delay-500">
-              <Link to="/dashboard">
+              <Link to="/login">
                 <Button size="lg" className="text-lg px-8 group">
                   Get Started
                   <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
@@ -201,7 +201,7 @@ export function Landing() {
           </p>
           <Link to="/login">
             <Button size="lg" variant="secondary" className="text-lg px-8 group">
-              Go to Data Records
+              Get Started
               <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
             </Button>
           </Link>
